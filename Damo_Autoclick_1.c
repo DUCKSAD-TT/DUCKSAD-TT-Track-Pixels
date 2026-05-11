@@ -127,7 +127,7 @@ int main()
     int regionH = (int)(realH * 0.55);
 
     Region searchArea = {
-        .x = (realW - regionW) / 2, // เริ่มจากกลางหน้าต่าง
+        .x = (realW - regionW) / 2,
         .y = (realH - regionH) / 2,
         .width = regionW,
         .height = regionH};
@@ -138,7 +138,7 @@ int main()
     printf("\n<--- [Keybinds] --->\n[F2] start auto click\n[F3] Find color at mouse local\n[F10] exit program\n");
     printf("Wait order eiei :>\n");
     
-
+    // Targetcolor
     COLORREF targetcolor = RGB(60, 60, 253);
     int tolerance = 33;
     BOOL keyheld = FALSE;
@@ -148,24 +148,23 @@ int main()
 
     while (1)
     {
+        // F10 Exit program
         if (GetAsyncKeyState(VK_F10) & 0x8000)
         {
             printf("Bye!");
             break;
         }
-        // กด F3 เพื่อดูสีใต้เมาส์ใน region
+        //  F3 Check the color under the cursor
         if (GetAsyncKeyState(VK_F3) & 0x8000)
         {
             POINT p;
             GetCursorPos(&p);
 
-            // แปลงพิกัดหน้าจอ → พิกัดภายในหน้าต่าง
             RECT rect2;
             GetWindowRect(hwnd, &rect2);
             int localX = p.x - rect2.left;
             int localY = p.y - rect2.top;
 
-            // capture แล้วอ่านสีตรงนั้น
             HBITMAP hSnap = captureRegion(hwnd, searchArea);
             COLORREF *snapP = getBitmapPixels(hSnap, searchArea.width, searchArea.height);
 
@@ -186,6 +185,7 @@ int main()
             DeleteObject(hSnap);
             Sleep(300);
         }
+        // F2 Start / Pause autoclick
         if (GetAsyncKeyState(VK_F2) & 0x8000)
         {
             if (!keyheld)
